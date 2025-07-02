@@ -9,3 +9,12 @@ export type Book = {
   image: string;
   description: string;
 };
+
+export type Quote = {
+  _id: string;
+  quote: string;
+  page: number;
+  chapter: number;
+  bookId: string;
+  bookTitle: string;
+};

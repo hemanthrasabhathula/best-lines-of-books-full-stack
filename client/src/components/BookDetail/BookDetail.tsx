@@ -5,6 +5,7 @@ import axios from "axios";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { Button } from "../ui/button";
+import { QuotesList } from "../QuotesList/QuotesList";
 
 export const BookDetail = () => {
   const { id } = useParams<{ id: string }>();
@@ -43,43 +44,46 @@ export const BookDetail = () => {
   const book = data;
   console.log("Book details:", book);
   return (
-    <div className="flex flex-col items-center max-w-5xl mx-auto p-4 justify-center min-h-screen">
-      <div className="grid grid-cols-1 sm:[grid-template-columns:auto_1fr] gap-6 mb-4">
-        <div className="flex flex-col items-center">
-          <img
-            src={book.image}
-            alt={book.title}
-            className="w-48 h-72 object-cover rounded-md shadow-md hover:shadow-lg transition-shadow duration-200"
-          />
+    <div>
+      <div className="flex flex-col items-center max-w-5xl mx-auto p-4 justify-center min-h-screen max-h-full">
+        <div className="grid grid-cols-1 sm:[grid-template-columns:auto_1fr] gap-6 mb-4">
+          <div className="flex flex-col items-center">
+            <img
+              src={book.image}
+              alt={book.title}
+              className="w-48 h-72 object-cover rounded-md shadow-md hover:shadow-lg transition-shadow duration-200"
+            />
+          </div>
+          <div className="flex flex-col items-start justify-center gap-0.5 p-4">
+            <h2 className="text-lg sm:text-2xl font-bold">{book.title}</h2>
+            <p className="text-gray-600">{book.author}</p>
+            <p className="text-gray-600">ISBN: {book.ISBN}</p>
+            <p className="text-gray-600">Genre: {book.genre}</p>
+            <p className="text-gray-600">Published: {book.published}</p>
+            <p className="text-gray-600">Pages: {book.pages}</p>
+          </div>
         </div>
-        <div className="flex flex-col items-start justify-center gap-0.5 p-4">
-          <h2 className="text-lg sm:text-2xl font-bold">{book.title}</h2>
-          <p className="text-gray-600">{book.author}</p>
-          <p className="text-gray-600">ISBN: {book.ISBN}</p>
-          <p className="text-gray-600">Genre: {book.genre}</p>
-          <p className="text-gray-600">Published: {book.published}</p>
-          <p className="text-gray-600">Pages: {book.pages}</p>
-        </div>
-      </div>
-      {book.description && (
-        <div className="mt-2 sm:mt-8 w-full max-w-3xl p-2 h-px">
-          <p
-            className={`text-gray-700 text-sm sm:text-base leading-relaxed ${
-              showFull ? "" : "line-clamp-6 sm:line-clamp-4"
-            }`}
-          >
-            <b>Description:</b> {book.description}
-          </p>
+        {book.description && (
+          <div className="mt-2 sm:mt-8 w-full max-w-3xl p-2">
+            <p
+              className={`text-gray-700 text-sm sm:text-base leading-relaxed ${
+                showFull ? "" : "line-clamp-6 sm:line-clamp-4"
+              }`}
+            >
+              <b>Description:</b> {book.description}
+            </p>
 
-          <Button
-            onClick={() => setShowFull(!showFull)}
-            className="underline italic text-sm p-0 m-0 h-fit hover:cursor-pointer inline"
-            variant={"link"}
-          >
-            {showFull ? "read less" : "read more"}
-          </Button>
-        </div>
-      )}
+            <Button
+              onClick={() => setShowFull(!showFull)}
+              className="underline italic text-sm p-0 m-0 h-fit hover:cursor-pointer inline"
+              variant={"link"}
+            >
+              {showFull ? "read less" : "read more"}
+            </Button>
+          </div>
+        )}
+      </div>
+      <QuotesList bookId={id} />
     </div>
   );
 };
