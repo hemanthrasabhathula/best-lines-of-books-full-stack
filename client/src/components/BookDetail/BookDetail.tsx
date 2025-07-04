@@ -56,7 +56,7 @@ export const BookDetail = () => {
           </div>
           <div className="flex flex-col items-start justify-center gap-0.5 p-4">
             <h2 className="text-lg sm:text-2xl font-bold">{book.title}</h2>
-            <p className="text-gray-600">{book.author}</p>
+            <p className="text-gray-600">by {book.author}</p>
             <p className="text-gray-600">ISBN: {book.ISBN}</p>
             <p className="text-gray-600">Genre: {book.genre}</p>
             <p className="text-gray-600">Published: {book.published}</p>
