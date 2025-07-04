@@ -3,9 +3,17 @@ import type { Book } from "@/types/types";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { Button } from "../ui/button";
 import { QuotesList } from "../QuotesList/QuotesList";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "../ui/breadcrumb";
 
 export const BookDetail = () => {
   const { id } = useParams<{ id: string }>();
@@ -45,7 +53,22 @@ export const BookDetail = () => {
   console.log("Book details:", book);
   return (
     <div>
-      <div className="flex flex-col items-center max-w-5xl mx-auto p-4 justify-center min-h-screen max-h-full">
+      <div className="flex max-w-7xl mx-auto mt-5 mb-5 p-4">
+        <Breadcrumb>
+          <BreadcrumbList>
+            <BreadcrumbItem>
+              <BreadcrumbLink asChild>
+                <Link to="/">Dashboard</Link>
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbPage>Book</BreadcrumbPage>
+            </BreadcrumbItem>
+          </BreadcrumbList>
+        </Breadcrumb>
+      </div>
+      <div className="flex flex-col items-center max-w-5xl mx-auto p-4 justify-center max-h-svh">
         <div className="grid grid-cols-1 sm:[grid-template-columns:auto_1fr] gap-6 mb-4">
           <div className="flex flex-col items-center">
             <img
