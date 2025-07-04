@@ -53,7 +53,7 @@ export const BookDetail = () => {
   console.log("Book details:", book);
   return (
     <div>
-      <div className="flex max-w-7xl mx-auto mt-3 mb-5 p-4">
+      <div className="flex max-w-7xl mx-auto mt-3 p-4">
         <Breadcrumb>
           <BreadcrumbList>
             <BreadcrumbItem>
@@ -68,7 +68,7 @@ export const BookDetail = () => {
           </BreadcrumbList>
         </Breadcrumb>
       </div>
-      <div className="flex flex-col items-center max-w-5xl mx-auto p-4 justify-center max-h-svh">
+      <div className="flex flex-col items-center max-w-5xl mx-auto p-4 sm:mt-4 mb-4 mt-8">
         <div className="grid grid-cols-1 sm:[grid-template-columns:auto_1fr] gap-6 mb-4">
           <div className="flex flex-col items-center">
             <img
@@ -87,7 +87,7 @@ export const BookDetail = () => {
           </div>
         </div>
         {book.description && (
-          <div className="mt-2 sm:mt-8 w-full max-w-3xl p-2">
+          <div className="mt-2 sm:mt-8 w-full max-w-3xl p-2 ">
             <p
               className={`text-gray-700 text-sm sm:text-base leading-relaxed ${
                 showFull ? "" : "line-clamp-6 sm:line-clamp-4"
