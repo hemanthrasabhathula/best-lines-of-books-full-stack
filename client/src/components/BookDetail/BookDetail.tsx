@@ -90,7 +90,7 @@ const BookData = ({ book }: { book: Book }) => {
           <img
             src={book.image}
             alt={book.title}
-            className="w-48 h-72 object-cover rounded-md shadow-md hover:shadow-lg transition-shadow duration-200"
+            className="w-48 h-72 object-cover rounded-md shadow-md hover:shadow-lg hover:-rotate-3 transition-all duration-200"
           />
         </div>
         <div className="flex flex-col items-start justify-center gap-0.5 p-4">
