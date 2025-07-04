@@ -53,7 +53,7 @@ export const BookDetail = () => {
   console.log("Book details:", book);
   return (
     <div>
-      <div className="flex max-w-7xl mx-auto mt-5 mb-5 p-4">
+      <div className="flex max-w-7xl mx-auto mt-3 mb-5 p-4">
         <Breadcrumb>
           <BreadcrumbList>
             <BreadcrumbItem>
