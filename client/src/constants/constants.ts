@@ -5,6 +5,38 @@ export const BASE_URL =
 
 export const ALL_BOOKS_KEY = "all_books";
 
+export const colors: string[] = [
+  "#FFDFD6",
+  // "#FFFBF5",
+  "#FEFAF6",
+  "#FFF8E3",
+  "#F9DBBA",
+  "#F7EFE5",
+  // "#F5EEE6",
+  "#F3D7CA",
+  "#F5EEE6",
+  "#EADBC8",
+  // "#E7E8D8",
+  "#E6A4B4",
+  "#E3A5C7",
+  "#E2BFD9",
+  "#DAC0A3",
+  "#D7D7D8",
+  // "#D3B1AB",
+  // "#C8A1E0",
+  "#B692C2",
+  "#BB9AB1",
+  "#B5CFB7",
+  "#BC9F8B",
+  "#987D9A",
+  "#8E7AB5",
+  // "#74512D",
+  // "#694F8E",
+  // "#674188",
+  // "#102C57",
+  "#8E7AB5",
+];
+
 export const books: Book[] = [
   {
     _id: "66948289e9fb2891bb3164b1",
