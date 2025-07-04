@@ -4,7 +4,8 @@ import { ALL_BOOKS_KEY, BASE_URL } from "@/constants/constants";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
-export const BooksList = () => {
+export const BooksList = ({ search }: { search: string }) => {
+  console.log("BooksList rendered with search:", search);
   const { data, isLoading, error } = useQuery({
     queryKey: [ALL_BOOKS_KEY],
     queryFn: async () =>
@@ -16,7 +17,11 @@ export const BooksList = () => {
     staleTime: 1000 * 60 * 5, // 5 minutes
   });
 
-  const books: Book[] = data || [];
+  let books: Book[] = data || [];
+  if (search.trim() !== "")
+    books = books.filter((book) =>
+      book.title.toLowerCase().includes(search.toLowerCase())
+    );
 
   if (isLoading)
     return (
@@ -27,7 +32,7 @@ export const BooksList = () => {
   return (
     <>
       <h2 className="text-md md:text-2xl mb-4 font-bold mt-4 justify-start w-full items-start">
-        All Books
+        {books.length === 0 ? "No Books Found" : "All Books"}
       </h2>
       <div className="space-y-4 grid gap-4 lg:gap-6 w-full grid-cols-3 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-6 justify-items-center ">
         {books.map((book) => (
