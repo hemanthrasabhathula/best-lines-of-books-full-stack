@@ -1,7 +1,7 @@
 import type { Book } from "@/types/types";
 
 export const BASE_URL =
-  import.meta.env.VITE_BASE_URL || "http://localhost:3000";
+  import.meta.env.VITE_BACKEND_BASE_URL || "http://localhost:3000";
 
 export const ALL_BOOKS_KEY = "all_books";
 
