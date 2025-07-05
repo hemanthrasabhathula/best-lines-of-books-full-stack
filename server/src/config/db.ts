@@ -1,8 +1,7 @@
 import mongoose from "mongoose";
 
-const MONGO_URL =
-  process.env.MONGO_URL ||
-  "mongodb+srv://Admin:Admin%40123@mongo-cluster.gpmpddo.mongodb.net/BestLinesOfBooks";
+const MONGO_URL = process.env.MONGO_URL || "";
+console.log("Connecting to MongoDB with URL:", MONGO_URL);
 
 export const connectDB = async () => {
   try {
