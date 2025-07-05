@@ -98,6 +98,18 @@ export const images = [
   image48,
 ];
 
-export const getRandomImage = () => {
-  return images[Math.floor(Math.random() * images.length)];
+export const getRandomImage = (currentImage?: string): string => {
+  let newImage = images[Math.floor(Math.random() * images.length)];
+  if (currentImage) {
+    while (newImage === currentImage) {
+      newImage = getRandomImage(currentImage);
+    }
+  }
+  return newImage;
+};
+
+export const getRandomCurrentAndNextImage = () => {
+  const currentImage = getRandomImage();
+  const nextImage = getRandomImage(currentImage);
+  return { currentImage, nextImage };
 };
