@@ -31,7 +31,7 @@ export const BooksList = ({ search }: { search: string }) => {
 
   return (
     <>
-      <h2 className="text-md md:text-2xl mb-4 font-bold mt-4 justify-start w-full items-start">
+      <h2 className="text-md md:text-2xl mb-4 font-bold mt-8 justify-start w-full items-start">
         {books.length === 0 ? "No Books Found" : "All Books"}
       </h2>
       <div className="space-y-4 grid gap-4 lg:gap-6 h-full w-full grid-cols-3 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-6 justify-items-center ">

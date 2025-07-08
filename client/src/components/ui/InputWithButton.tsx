@@ -1,6 +1,7 @@
 import { useRef } from "react";
 import { Button } from "./button";
 import { Input } from "./input";
+import { SearchIcon } from "lucide-react";
 
 interface InputWithButtonProps {
   setSearch: (value: string) => void;
@@ -39,7 +40,7 @@ export const InputWithButton = ({ setSearch }: InputWithButtonProps) => {
         className="hover:cursor-pointer"
         onClick={handleButtonClick}
       >
-        Search
+        <SearchIcon />
       </Button>
     </div>
   );
