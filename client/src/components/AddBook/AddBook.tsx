@@ -40,10 +40,18 @@ export const AddBook = () => {
     description: "",
   });
 
+  const [imageError, setImageError] = useState<boolean>(false);
+
   const handleBookData = (data: Partial<z.infer<typeof bookSchema>>) => {
     setBookData(data);
     console.log("Book data submitted:", data);
   };
+
+  useEffect(() => {
+    if (bookData?.image) {
+      setImageError(false);
+    }
+  }, [bookData?.image]);
 
   return (
     <div className="flex flex-col items-center max-w-7xl mx-auto p-4">
@@ -63,14 +71,15 @@ export const AddBook = () => {
           <div className="w-full h-full p-4 bg-white rounded-lg shadow-md overflow-auto">
             {/* Book preview content goes here */}
             {bookData && (
-              <div className="flex flex-col items-center max-w-5xl mx-auto p-4 sm:mt-4 mb-4 mt-8 ">
+              <div className="flex flex-col items-center max-w-5xl mx-auto sm:mt-4 mb-4 mt-8 ">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-4">
                   <div className="flex flex-col items-center">
-                    {bookData.image ? (
+                    {bookData.image && !imageError ? (
                       <img
                         src={bookData.image}
                         alt={bookData.title}
                         className="w-48 h-72 object-cover rounded-md shadow hover:shadow-lg hover:-rotate-3 transition-all duration-200"
+                        onError={() => setImageError(true)}
                       />
                     ) : (
                       <div className="w-48 h-72 bg-gray-200 rounded-md shadow flex items-center justify-center">
@@ -79,7 +88,7 @@ export const AddBook = () => {
                     )}
                   </div>
                   <div className="flex flex-col items-start justify-center gap-0.5 overflow-auto">
-                    <h2 className="text-lg sm:text-2xl font-bold break-all">
+                    <h2 className="text-lg sm:text-2xl font-bold whitespace-break-spaces">
                       {bookData.title ? bookData.title : "Title"}
                     </h2>
                     <p className="text-gray-600 break-all">

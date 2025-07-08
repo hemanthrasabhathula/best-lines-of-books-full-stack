@@ -54,7 +54,7 @@ export const BookDetail = () => {
   console.log("Random color for background:", color);
   return (
     <div style={{ backgroundColor: color }}>
-      <div className="min-h-[calc(100vh-64px)]">
+      <div className="min-h-[calc(100vh-60px)] sm:min-h-[calc(100vh-68px)]">
         <div className="flex max-w-7xl mx-auto p-4">
           <Breadcrumb>
             <BreadcrumbList>
