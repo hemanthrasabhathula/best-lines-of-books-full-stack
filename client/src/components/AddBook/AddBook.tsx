@@ -29,7 +29,16 @@ const bookSchema = z.object({
 export const AddBook = () => {
   const [bookData, setBookData] = useState<null | Partial<
     z.infer<typeof bookSchema>
-  >>(null);
+  >>({
+    title: "",
+    author: "",
+    isbn: "",
+    genre: "",
+    published: "",
+    pages: "",
+    image: "",
+    description: "",
+  });
 
   const handleBookData = (data: Partial<z.infer<typeof bookSchema>>) => {
     setBookData(data);
@@ -38,7 +47,7 @@ export const AddBook = () => {
 
   return (
     <div className="flex flex-col items-center max-w-7xl mx-auto p-4">
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 sm:gap-4  w-full">
         <div className="flex flex-col items-center w-full">
           <h2 className="flex flex-col items-center text-xl font-bold w-full p-4">
             Add a New Book
@@ -54,22 +63,51 @@ export const AddBook = () => {
           <div className="w-full h-full p-4 bg-white rounded-lg shadow-md overflow-auto">
             {/* Book preview content goes here */}
             {bookData && (
-              <div>
-                <h3 className="text-lg font-bold"> Title: {bookData.title}</h3>
-                <p className="text-gray-600"> Author: {bookData.author}</p>
-                <p className="text-gray-600"> ISBN: {bookData.isbn}</p>
-                <p className="text-gray-600"> Genre: {bookData.genre}</p>
-                <p className="text-gray-600">Published: {bookData.published}</p>
-                <p className="text-gray-600"> Pages: {bookData.pages}</p>
-                {/* <img
-                  src={bookData.image}
-                  alt={bookData.title}
-                  className="w-32 h-32 object-cover"
-                /> */}
-                <p className="text-gray-600 break-words ">
-                  {" "}
-                  Description: {bookData.description}
-                </p>
+              <div className="flex flex-col items-center max-w-5xl mx-auto p-4 sm:mt-4 mb-4 mt-8 ">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-4">
+                  <div className="flex flex-col items-center">
+                    {bookData.image ? (
+                      <img
+                        src={bookData.image}
+                        alt={bookData.title}
+                        className="w-48 h-72 object-cover rounded-md shadow hover:shadow-lg hover:-rotate-3 transition-all duration-200"
+                      />
+                    ) : (
+                      <div className="w-48 h-72 bg-gray-200 rounded-md shadow flex items-center justify-center">
+                        <span className="text-gray-500">No Image</span>
+                      </div>
+                    )}
+                  </div>
+                  <div className="flex flex-col items-start justify-center gap-0.5 overflow-auto">
+                    <h2 className="text-lg sm:text-2xl font-bold break-all">
+                      {bookData.title ? bookData.title : "Title"}
+                    </h2>
+                    <p className="text-gray-600 break-all">
+                      by {bookData.author}
+                    </p>
+                    <p className="text-gray-600 break-all">
+                      ISBN: {bookData.isbn}
+                    </p>
+                    <p className="text-gray-600 break-all">
+                      Genre: {bookData.genre}
+                    </p>
+                    <p className="text-gray-600 break-all">
+                      Published: {bookData.published}
+                    </p>
+                    <p className="text-gray-600 break-all">
+                      Pages: {bookData.pages}
+                    </p>
+                  </div>
+                </div>
+                {bookData.description && (
+                  <div className="mt-2 sm:mt-8 w-full max-w-3xl p-2 overflow-auto">
+                    <p
+                      className={`text-gray-700 text-sm sm:text-base leading-relaxed break-words `}
+                    >
+                      <b>Description:</b> {bookData.description}
+                    </p>
+                  </div>
+                )}
               </div>
             )}
           </div>
