@@ -2,6 +2,7 @@ import express, { Request, Response } from "express";
 import bookRouter from "./modules/book/book.routes";
 import quoteRouter from "./modules/quotes/quotes.routes";
 import cors from "cors";
+import groqRouter from "./modules/grokai/groq.routes";
 
 const app = express();
 app.use(cors());
@@ -9,6 +10,7 @@ app.use(express.json());
 
 app.use("/api/books", bookRouter);
 app.use("/api/quotes", quoteRouter);
+app.use("/api/groqai", groqRouter);
 
 app.get("/health", (req: Request, res: Response) => {
   console.log("Health check endpoint hit");

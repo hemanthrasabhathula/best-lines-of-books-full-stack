@@ -5,6 +5,8 @@ export const BASE_URL =
 
 export const ALL_BOOKS_KEY = "all_books";
 
+export const GROQ_API_PATH = "/api/groqai/generate-book-data";
+
 export const colors: string[] = [
   "#FFDFD6",
   // "#FFFBF5",

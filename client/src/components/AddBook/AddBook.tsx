@@ -12,12 +12,13 @@ import {
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { Textarea } from "../ui/textarea";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { BASE_URL } from "@/constants/constants";
 
 const bookSchema = z.object({
   title: z.string().min(1, "Title is required"),
   author: z.string().min(2, "Author must be at least 2 characters."),
-  isbn: z.string().min(10, "ISBN must be at least 10 characters."),
+  ISBN: z.string().min(10, "ISBN must be at least 10 characters."),
   genre: z.string().min(3, "Genre must be at least 3 characters."),
   published: z.string().optional(),
   pages: z.string().optional(),
@@ -32,7 +33,7 @@ export const AddBook = () => {
   >>({
     title: "",
     author: "",
-    isbn: "",
+    ISBN: "",
     genre: "",
     published: "",
     pages: "",
@@ -95,7 +96,7 @@ export const AddBook = () => {
                       by {bookData.author}
                     </p>
                     <p className="text-gray-600 break-all">
-                      ISBN: {bookData.isbn}
+                      ISBN: {bookData.ISBN}
                     </p>
                     <p className="text-gray-600 break-all">
                       Genre: {bookData.genre}
@@ -131,12 +132,14 @@ interface BookFormProps {
 }
 
 export const BookForm = ({ onBookData }: BookFormProps) => {
+  const titleRef = useRef<HTMLInputElement>(null);
+
   const form = useForm<z.infer<typeof bookSchema>>({
     resolver: zodResolver(bookSchema),
     defaultValues: {
       title: "",
       author: "",
-      isbn: "",
+      ISBN: "",
       genre: "",
       published: "",
       pages: "",
@@ -158,6 +161,41 @@ export const BookForm = ({ onBookData }: BookFormProps) => {
     return () => subscription.unsubscribe();
   }, [form, onBookData]);
 
+  const handleGenerateClick = async () => {
+    if (!titleRef.current?.value) {
+      alert("Please enter a book title to generate data.");
+      return;
+    }
+    const title = titleRef.current.value;
+    try {
+      const response = await fetch(
+        `${BASE_URL}/api/groqai/generate-book-data`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ title }),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to generate book data");
+      }
+
+      const data = await response.json();
+      if (data.status === "success") {
+        form.reset(data.data);
+        console.log("Generated book data:", data.data);
+      } else {
+        throw new Error(data.message || "Unknown error");
+      }
+    } catch (error) {
+      console.error("Error generating book data:", error);
+      alert("Failed to generate book data. Please try again.");
+    }
+  };
+
   return (
     <>
       <Form {...form}>
@@ -169,7 +207,11 @@ export const BookForm = ({ onBookData }: BookFormProps) => {
               <FormItem>
                 <FormLabel className="text-xl">Title</FormLabel>
                 <FormControl>
-                  <Input placeholder="Book Title" {...field} />
+                  <Input
+                    placeholder="e.g. The Great Gatsby"
+                    {...field}
+                    ref={titleRef}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -182,7 +224,7 @@ export const BookForm = ({ onBookData }: BookFormProps) => {
               <FormItem>
                 <FormLabel className="text-xl">Author</FormLabel>
                 <FormControl>
-                  <Input placeholder="Book Author" {...field} />
+                  <Input placeholder="e.g. J.K. Rowling" {...field} />
                 </FormControl>
                 <FormMessage className="w-fit h-fit" />
               </FormItem>
@@ -192,12 +234,12 @@ export const BookForm = ({ onBookData }: BookFormProps) => {
           <div className="grid grid-cols-2 gap-4">
             <FormField
               control={form.control}
-              name="isbn"
+              name="ISBN"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="text-xl">ISBN</FormLabel>
                   <FormControl>
-                    <Input placeholder="ISBN Number" {...field} />
+                    <Input placeholder="e.g. 950-05-0703-8" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -210,7 +252,10 @@ export const BookForm = ({ onBookData }: BookFormProps) => {
                 <FormItem>
                   <FormLabel className="text-xl">Genre</FormLabel>
                   <FormControl>
-                    <Input placeholder="Genre" {...field} />
+                    <Input
+                      placeholder="e.g. Fiction, Mystery, Sci-Fi"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -226,7 +271,7 @@ export const BookForm = ({ onBookData }: BookFormProps) => {
                 <FormItem>
                   <FormLabel className="text-xl">Published</FormLabel>
                   <FormControl>
-                    <Input placeholder="Published Year" {...field} />
+                    <Input placeholder="e.g. 1990" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -239,7 +284,7 @@ export const BookForm = ({ onBookData }: BookFormProps) => {
                 <FormItem>
                   <FormLabel className="text-xl">Pages</FormLabel>
                   <FormControl>
-                    <Input placeholder="Number of Pages" {...field} />
+                    <Input placeholder="e.g. 300" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -253,7 +298,10 @@ export const BookForm = ({ onBookData }: BookFormProps) => {
               <FormItem>
                 <FormLabel className="text-xl">Image URL</FormLabel>
                 <FormControl>
-                  <Input placeholder="Image URL" {...field} />
+                  <Input
+                    placeholder="e.g. https://example.com/image.jpg"
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -267,16 +315,24 @@ export const BookForm = ({ onBookData }: BookFormProps) => {
               <FormItem>
                 <FormLabel className="text-xl">Description</FormLabel>
                 <FormControl>
-                  <Textarea placeholder="Description" {...field} />
+                  <Textarea
+                    placeholder="e.g. A thrilling mystery novel that keeps you on the edge of your seat."
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
 
-          <Button type="submit" className="cursor-pointer">
-            Add Book
-          </Button>
+          <div>
+            <Button type="submit" className="cursor-pointer">
+              Add Book
+            </Button>
+            <Button type="button" onClick={handleGenerateClick}>
+              Generate
+            </Button>
+          </div>
         </form>
       </Form>
     </>
