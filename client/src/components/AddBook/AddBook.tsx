@@ -14,14 +14,18 @@ import { Button } from "../ui/button";
 import { Textarea } from "../ui/textarea";
 import { useEffect, useRef, useState } from "react";
 import { BASE_URL } from "@/constants/constants";
+import { Wand2 } from "lucide-react";
 
 const bookSchema = z.object({
   title: z.string().min(1, "Title is required"),
   author: z.string().min(2, "Author must be at least 2 characters."),
   ISBN: z.string().min(10, "ISBN must be at least 10 characters."),
   genre: z.string().min(3, "Genre must be at least 3 characters."),
-  published: z.string().optional(),
-  pages: z.string().optional(),
+  published: z
+    .string()
+    .min(4, "Published year must be at least 4 characters.")
+    .optional(),
+  pages: z.string().min(1, "Pages must be at least 1 character.").optional(),
   image: z.string().url("Invalid URL for cover image").optional(),
   description: z
     .string()
@@ -325,12 +329,19 @@ export const BookForm = ({ onBookData }: BookFormProps) => {
             )}
           />
 
-          <div>
-            <Button type="submit" className="cursor-pointer">
-              Add Book
+          <div className="flex justify-between items-center mt-6 mb-2">
+            <Button
+              type="button"
+              className="cursor-pointer transition-transform duration-150 active:scale-90"
+              onClick={handleGenerateClick}
+            >
+              <Wand2 className="inline-block mr-1" /> Generate
             </Button>
-            <Button type="button" onClick={handleGenerateClick}>
-              Generate
+            <Button
+              type="submit"
+              className="cursor-pointer transition-transform duration-150 active:scale-90"
+            >
+              Add Book
             </Button>
           </div>
         </form>
