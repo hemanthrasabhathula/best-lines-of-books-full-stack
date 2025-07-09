@@ -131,8 +131,8 @@ export const QuotesIterator = memo(
     const prevQuote = useCallback(() => {
       const newIndex = index > 0 ? index - 1 : length - 1;
       setIndex(newIndex);
-      // Don't change background on previous (as per your code)
-    }, [index, length]);
+      onBackgroundChange();
+    }, [index, length, onBackgroundChange]);
 
     return (
       <div className="flex flex-col items-center justify-center w-full max-w-xl p-8 rounded-2xl shadow-sm hover:shadow-md transition-shadow duration-200 backdrop-blur-sm bg-white/30">
