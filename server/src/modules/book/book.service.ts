@@ -89,3 +89,16 @@ export const updateBookById = async (
     throw new Error(`Failed to update book with ID ${bookId}`);
   }
 };
+
+export const deleteBookById = async (bookId: string): Promise<void> => {
+  try {
+    const result = await BookModel.findByIdAndDelete(bookId).exec();
+    if (!result) {
+      throw new Error(`Book with ID ${bookId} not found`);
+    }
+    console.log(`Book with ID ${bookId} deleted successfully`);
+  } catch (error) {
+    console.error(`Error deleting book with ID ${bookId}:`, error);
+    throw new Error(`Failed to delete book with ID ${bookId}`);
+  }
+};

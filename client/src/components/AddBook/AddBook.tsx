@@ -13,8 +13,9 @@ import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { Textarea } from "../ui/textarea";
 import { useEffect, useRef, useState } from "react";
-import { BASE_URL } from "@/constants/constants";
+import { BASE_URL, GROQ_API_PATH } from "@/constants/constants";
 import { Wand2 } from "lucide-react";
+import axios from "axios";
 
 const bookSchema = z.object({
   title: z.string().min(1, "Title is required"),
@@ -152,9 +153,33 @@ export const BookForm = ({ onBookData }: BookFormProps) => {
     },
   });
 
-  const onSubmit = (data: z.infer<typeof bookSchema>) => {
+  const onSubmit = async (data: z.infer<typeof bookSchema>) => {
     // Handle form submission, e.g., send data to the server
     console.log("Form submitted with data:", data);
+
+    const newBookData = {
+      ...data,
+      published: data.published ? parseInt(data.published) : 0,
+      pages: data.pages ? parseInt(data.pages) : 0,
+    };
+
+    const response = await axios.post(`${BASE_URL}/api/books`, newBookData);
+
+    if (response.status === 201) {
+      console.log("Book added successfully:");
+      form.reset({
+        title: "",
+        author: "",
+        ISBN: "",
+        genre: "",
+        published: "",
+        pages: "",
+        image: "",
+        description: "",
+      });
+    } else {
+      console.error("Failed to add book:", response.data);
+    }
   };
 
   useEffect(() => {
@@ -172,22 +197,15 @@ export const BookForm = ({ onBookData }: BookFormProps) => {
     }
     const title = titleRef.current.value;
     try {
-      const response = await fetch(
-        `${BASE_URL}/api/groqai/generate-book-data`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ title }),
-        }
-      );
+      const response = await axios.post(`${BASE_URL}${GROQ_API_PATH}`, {
+        title,
+      });
 
-      if (!response.ok) {
+      if (response.status !== 200) {
         throw new Error("Failed to generate book data");
       }
 
-      const data = await response.json();
+      const data = response.data;
       if (data.status === "success") {
         form.reset(data.data);
         console.log("Generated book data:", data.data);
