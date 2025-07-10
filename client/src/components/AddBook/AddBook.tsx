@@ -14,22 +14,28 @@ import { Button } from "../ui/button";
 import { Textarea } from "../ui/textarea";
 import { useEffect, useRef, useState } from "react";
 import { BASE_URL, GROQ_API_PATH } from "@/constants/constants";
-import { Wand2 } from "lucide-react";
+import { Loader2, Wand2 } from "lucide-react";
 import axios from "axios";
 
 const bookSchema = z.object({
-  title: z.string().min(1, "Title is required"),
-  author: z.string().min(2, "Author must be at least 2 characters."),
-  ISBN: z.string().min(10, "ISBN must be at least 10 characters."),
-  genre: z.string().min(3, "Genre must be at least 3 characters."),
+  title: z.string().trim().min(1, "Title is required"),
+  author: z.string().trim().min(2, "Author must be at least 2 characters."),
+  ISBN: z.string().trim().min(10, "ISBN must be at least 10 characters."),
+  genre: z.string().trim().min(3, "Genre must be at least 3 characters."),
   published: z
     .string()
+    .trim()
     .min(4, "Published year must be at least 4 characters.")
     .optional(),
-  pages: z.string().min(1, "Pages must be at least 1 character.").optional(),
-  image: z.string().url("Invalid URL for cover image").optional(),
+  pages: z
+    .string()
+    .trim()
+    .min(1, "Pages must be at least 1 character.")
+    .optional(),
+  image: z.string().trim().url("Invalid URL for cover image").optional(),
   description: z
     .string()
+    .trim()
     .min(10, "Description must be at least 10 characters."),
 });
 export const AddBook = () => {
@@ -137,6 +143,7 @@ interface BookFormProps {
 }
 
 export const BookForm = ({ onBookData }: BookFormProps) => {
+  const [generating, setGenerating] = useState<boolean>(false);
   const titleRef = useRef<HTMLInputElement>(null);
 
   const form = useForm<z.infer<typeof bookSchema>>({
@@ -191,11 +198,13 @@ export const BookForm = ({ onBookData }: BookFormProps) => {
   }, [form, onBookData]);
 
   const handleGenerateClick = async () => {
+    console.log("Generating book data...");
     if (!titleRef.current?.value) {
       alert("Please enter a book title to generate data.");
       return;
     }
     const title = titleRef.current.value;
+    setGenerating(true);
     try {
       const response = await axios.post(`${BASE_URL}${GROQ_API_PATH}`, {
         title,
@@ -207,14 +216,18 @@ export const BookForm = ({ onBookData }: BookFormProps) => {
 
       const data = response.data;
       if (data.status === "success") {
+        console.log("Book data generated successfully:", data.data);
         form.reset(data.data);
         console.log("Generated book data:", data.data);
       } else {
+        console.error("Error generating book data:", data);
         throw new Error(data.message || "Unknown error");
       }
     } catch (error) {
       console.error("Error generating book data:", error);
       alert("Failed to generate book data. Please try again.");
+    } finally {
+      setGenerating(false);
     }
   };
 
@@ -353,7 +366,21 @@ export const BookForm = ({ onBookData }: BookFormProps) => {
               className="cursor-pointer transition-transform duration-150 active:scale-90"
               onClick={handleGenerateClick}
             >
-              <Wand2 className="inline-block mr-1" /> Generate
+              {generating ? (
+                <>
+                  <Loader2
+                    className={`inline-block mr-1 ${
+                      generating ? "animate-spin" : ""
+                    }`}
+                  />
+                  <span>Generating...</span>
+                </>
+              ) : (
+                <>
+                  <Wand2 className="inline-block mr-1" />
+                  <span>Generate</span>
+                </>
+              )}
             </Button>
             <Button
               type="submit"
