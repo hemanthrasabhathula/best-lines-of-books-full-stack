@@ -26,11 +26,13 @@ const bookSchema = z.object({
     .string()
     .trim()
     .min(4, "Published year must be at least 4 characters.")
+    .max(4, "Published year cannot exceed 4 characters.")
     .optional(),
   pages: z
     .string()
     .trim()
     .min(1, "Pages must be at least 1 character.")
+    .max(5, "Pages cannot exceed 5 characters.")
     .optional(),
   image: z.string().trim().url("Invalid URL for cover image").optional(),
   description: z
@@ -240,7 +242,7 @@ export const BookForm = ({ onBookData }: BookFormProps) => {
             name="title"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-xl">Title</FormLabel>
+                <FormLabel className="text-lg">Title</FormLabel>
                 <FormControl>
                   <Input
                     placeholder="e.g. The Great Gatsby"
@@ -257,7 +259,7 @@ export const BookForm = ({ onBookData }: BookFormProps) => {
             name="author"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-xl">Author</FormLabel>
+                <FormLabel className="text-lg">Author</FormLabel>
                 <FormControl>
                   <Input placeholder="e.g. J.K. Rowling" {...field} />
                 </FormControl>
@@ -266,13 +268,13 @@ export const BookForm = ({ onBookData }: BookFormProps) => {
             )}
           />
 
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <FormField
               control={form.control}
               name="ISBN"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-xl">ISBN</FormLabel>
+                  <FormLabel className="text-lg">ISBN</FormLabel>
                   <FormControl>
                     <Input placeholder="e.g. 950-05-0703-8" {...field} />
                   </FormControl>
@@ -285,7 +287,7 @@ export const BookForm = ({ onBookData }: BookFormProps) => {
               name="genre"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-xl">Genre</FormLabel>
+                  <FormLabel className="text-lg">Genre</FormLabel>
                   <FormControl>
                     <Input
                       placeholder="e.g. Fiction, Mystery, Sci-Fi"
@@ -304,7 +306,7 @@ export const BookForm = ({ onBookData }: BookFormProps) => {
               name="published"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-xl">Published</FormLabel>
+                  <FormLabel className="text-lg">Published</FormLabel>
                   <FormControl>
                     <Input placeholder="e.g. 1990" {...field} />
                   </FormControl>
@@ -317,7 +319,7 @@ export const BookForm = ({ onBookData }: BookFormProps) => {
               name="pages"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-xl">Pages</FormLabel>
+                  <FormLabel className="text-lg">Pages</FormLabel>
                   <FormControl>
                     <Input placeholder="e.g. 300" {...field} />
                   </FormControl>
@@ -331,7 +333,7 @@ export const BookForm = ({ onBookData }: BookFormProps) => {
             name="image"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-xl">Image URL</FormLabel>
+                <FormLabel className="text-lg">Image URL</FormLabel>
                 <FormControl>
                   <Input
                     placeholder="e.g. https://example.com/image.jpg"
@@ -348,7 +350,7 @@ export const BookForm = ({ onBookData }: BookFormProps) => {
             name="description"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-xl">Description</FormLabel>
+                <FormLabel className="text-lg">Description</FormLabel>
                 <FormControl>
                   <Textarea
                     placeholder="e.g. A thrilling mystery novel that keeps you on the edge of your seat."

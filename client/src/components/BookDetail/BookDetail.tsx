@@ -84,7 +84,7 @@ const BookData = ({ book }: { book: Book }) => {
   const [showFull, setShowFull] = useState<boolean>(false);
 
   return (
-    <div className="flex flex-col items-center max-w-5xl mx-auto p-4 sm:mt-4 mb-4 mt-8">
+    <div className="flex flex-col items-center max-w-5xl mx-auto p-4 sm:mt-4 mt-8">
       <div className="grid grid-cols-1 sm:[grid-template-columns:auto_1fr] gap-6 mb-4">
         <div className="flex flex-col items-center">
           <img

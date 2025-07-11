@@ -7,16 +7,34 @@ import {
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { Menu } from "lucide-react";
+import Logo from "@/assets/logo/Blob_logo.png";
 
 export const Navbar = () => {
   const [open, setOpen] = useState(false);
 
   return (
     <nav className="w-full bg-gray-800 text-white shadow-lg top-0 z-auto">
-      <div className="flex justify-between items-center max-w-7xl mx-auto p-4">
+      <div className="flex justify-between items-center max-w-7xl mx-auto py-2 px-4">
         {/* Left side links (desktop) */}
         <NavigationMenu className="hidden md:flex">
-          <NavigationMenuList className="flex">
+          <NavigationMenuList className="flex gap-4">
+            <NavigationMenuItem asChild>
+              <Link to="/" className="text-white">
+                <div className="flex items-center gap-2">
+                  <img
+                    src={Logo}
+                    alt="BLOB Logo"
+                    className="w-10 h-10 rounded-full"
+                  />
+                  <div className="flex flex-col">
+                    <div className="text-lg font-semibold">BLOB</div>
+                    <div className="text-gray-400 text-sm">
+                      Best Lines of Books
+                    </div>
+                  </div>
+                </div>
+              </Link>
+            </NavigationMenuItem>
             <NavigationMenuItem>
               <NavigationMenuLink asChild>
                 <Link to="/">Home</Link>
@@ -30,7 +48,20 @@ export const Navbar = () => {
           </NavigationMenuList>
         </NavigationMenu>
         {/* Hamburger menu (mobile) */}
-        <div className="md:hidden flex justify-end items-end w-full ">
+        <div className="md:hidden flex justify-between items-center w-full ">
+          <Link to="/" className="text-white">
+            <div className="flex items-center gap-2">
+              <img
+                src={Logo}
+                alt="BLOB Logo"
+                className="w-10 h-10 rounded-full"
+              />
+              <div className="flex flex-col">
+                <div className="text-lg font-semibold">BLOB</div>
+                <div className="text-gray-400 text-sm">Best Lines of Books</div>
+              </div>
+            </div>
+          </Link>
           <button
             onClick={() => setOpen((prev) => !prev)}
             aria-label="Open menu"
