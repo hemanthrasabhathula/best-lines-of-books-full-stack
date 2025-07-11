@@ -4,6 +4,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { BookDetail } from "./components/BookDetail/BookDetail";
 import { Navbar } from "./components/ui/navbar";
 import { AddBook } from "./components/AddBook/AddBook";
+import { Toaster } from "./components/ui/sonner";
 
 const queryClient = new QueryClient();
 function App() {
@@ -17,6 +18,7 @@ function App() {
           <Route path="/addbook" element={<AddBook />} />
         </Routes>
       </BrowserRouter>
+      <Toaster />
     </QueryClientProvider>
   );
 }

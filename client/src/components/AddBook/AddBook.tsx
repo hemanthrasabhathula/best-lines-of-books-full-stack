@@ -16,6 +16,7 @@ import { useEffect, useRef, useState } from "react";
 import { BASE_URL, GROQ_API_PATH } from "@/constants/constants";
 import { Loader2, Wand2 } from "lucide-react";
 import axios from "axios";
+import { toast } from "sonner";
 
 const bookSchema = z.object({
   title: z.string().trim().min(1, "Title is required"),
@@ -175,6 +176,7 @@ export const BookForm = ({ onBookData }: BookFormProps) => {
     const response = await axios.post(`${BASE_URL}/api/books`, newBookData);
 
     if (response.status === 201) {
+      toast.success("Book added successfully!");
       console.log("Book added successfully:");
       form.reset({
         title: "",
@@ -202,7 +204,8 @@ export const BookForm = ({ onBookData }: BookFormProps) => {
   const handleGenerateClick = async () => {
     console.log("Generating book data...");
     if (!titleRef.current?.value) {
-      alert("Please enter a book title to generate data.");
+      toast.error("Please enter a book title to generate data.");
+      // alert("Please enter a book title to generate data.");
       return;
     }
     const title = titleRef.current.value;
@@ -218,16 +221,19 @@ export const BookForm = ({ onBookData }: BookFormProps) => {
 
       const data = response.data;
       if (data.status === "success") {
+        toast.success("Book data generated successfully!");
         console.log("Book data generated successfully:", data.data);
         form.reset(data.data);
         console.log("Generated book data:", data.data);
       } else {
+        toast.error("Failed to generate book data");
         console.error("Error generating book data:", data);
         throw new Error(data.message || "Unknown error");
       }
     } catch (error) {
       console.error("Error generating book data:", error);
-      alert("Failed to generate book data. Please try again.");
+      toast.error("Failed to generate book data. Please try again.");
+      // alert("Failed to generate book data. Please try again.");
     } finally {
       setGenerating(false);
     }

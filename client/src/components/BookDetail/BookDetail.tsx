@@ -82,16 +82,23 @@ export const BookDetail = () => {
 
 const BookData = ({ book }: { book: Book }) => {
   const [showFull, setShowFull] = useState<boolean>(false);
-
+  const [imageError, setImageError] = useState<boolean>(false);
   return (
     <div className="flex flex-col items-center max-w-5xl mx-auto p-4 sm:mt-4 mt-8">
       <div className="grid grid-cols-1 sm:[grid-template-columns:auto_1fr] gap-6 mb-4">
         <div className="flex flex-col items-center">
-          <img
-            src={book.image}
-            alt={book.title}
-            className="w-48 h-72 object-cover rounded-md shadow-md hover:shadow-lg hover:-rotate-3 transition-all duration-200"
-          />
+          {imageError ? (
+            <div className="w-48 h-72 rounded-md shadow flex items-center justify-center">
+              <span className="text-gray-500">No Image</span>
+            </div>
+          ) : (
+            <img
+              src={book.image}
+              alt={book.title}
+              className="w-48 h-72 object-cover rounded-md shadow-md hover:shadow-lg hover:-rotate-3 transition-all duration-200"
+              onError={() => setImageError(true)}
+            />
+          )}
         </div>
         <div className="flex flex-col items-start justify-center gap-0.5 p-4">
           <h2 className="text-lg sm:text-2xl font-bold">{book.title}</h2>
