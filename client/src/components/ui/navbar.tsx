@@ -65,8 +65,8 @@ export const Navbar = () => {
             </div>
           </Link>
           {/* Hamburger button */}
-          <div className="flex items-center md:hidden">
-            <HamburgerButton open={open} onClick={toggleMenu} />
+          <div className="flex md:hidden p-2">
+            <HamburgerButton open={open} onClick={toggleMenu} className="w-6" />
           </div>
           {/* <button onClick={toggleMenu} aria-label="Open menu">
             <Menu size={28} />
