@@ -6,11 +6,13 @@ import {
 } from "./navigation-menu";
 import { Link } from "react-router-dom";
 import { useState } from "react";
-import { Menu } from "lucide-react";
 import Logo from "@/assets/logo/Blob_logo.png";
+import { HamburgerButton } from "./hamburgerButton";
 
 export const Navbar = () => {
   const [open, setOpen] = useState(false);
+
+  const toggleMenu = () => setOpen((prev) => !prev);
 
   return (
     <nav className="w-full bg-gray-800 text-white shadow-lg top-0 z-auto">
@@ -62,12 +64,13 @@ export const Navbar = () => {
               </div>
             </div>
           </Link>
-          <button
-            onClick={() => setOpen((prev) => !prev)}
-            aria-label="Open menu"
-          >
+          {/* Hamburger button */}
+          <div className="flex items-center md:hidden">
+            <HamburgerButton open={open} onClick={toggleMenu} />
+          </div>
+          {/* <button onClick={toggleMenu} aria-label="Open menu">
             <Menu size={28} />
-          </button>
+          </button> */}
         </div>
         {/* Right side link (desktop) */}
         <NavigationMenu className="hidden md:flex">
@@ -84,7 +87,7 @@ export const Navbar = () => {
       <div
         className={`flex flex-col gap-4 bg-gray-800 px-4 items-end overflow-hidden transition-all duration-300 md:hidden ${
           open
-            ? "max-h-60 py-4 opacity-100"
+            ? "max-h-60 pb-4 opacity-100"
             : "max-h-0 py-0 opacity-0 pointer-events-none"
         }`}
       >
