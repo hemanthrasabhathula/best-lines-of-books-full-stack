@@ -17,6 +17,15 @@ import { BASE_URL, GROQ_API_PATH } from "@/constants/constants";
 import { Loader2, Wand2 } from "lucide-react";
 import axios from "axios";
 import { toast } from "sonner";
+import { Link } from "react-router-dom";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "../ui/breadcrumb";
 
 const bookSchema = z.object({
   title: z.string().trim().min(1, "Title is required"),
@@ -70,6 +79,24 @@ export const AddBook = () => {
 
   return (
     <div className="flex flex-col items-center max-w-7xl mx-auto p-4">
+      <div className="flex max-w-7xl mx-auto p-4 w-full">
+        <Breadcrumb>
+          <BreadcrumbList>
+            <BreadcrumbItem>
+              <BreadcrumbLink
+                asChild
+                className="text-gray-600 onhover:text-gray-800 hover:underline"
+              >
+                <Link to="/">Dashboard</Link>
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbPage>Add Book</BreadcrumbPage>
+            </BreadcrumbItem>
+          </BreadcrumbList>
+        </Breadcrumb>
+      </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 sm:gap-4  w-full">
         <div className="flex flex-col items-center w-full">
           <h2 className="flex flex-col items-center text-xl font-bold w-full p-4">
