@@ -1,7 +1,6 @@
 import axios from "axios";
 const KEEP_ALIVE_URL =
-  process.env.BASE_URL ||
-  "https://best-lines-of-books-full-stack.onrender.com/";
+  process.env.BASE_URL || "https://best-lines-of-books-full-stack.onrender.com";
 
 export const keepAliveService = async () => {
   try {
