@@ -1,0 +1,25 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: best-lines-of-books-backend
+  namespace: argocd
+  annotations:
+    # Argo Image Updater: track backend image (no git commits)
+    argocd-image-updater.argoproj.io/image-list: node-api=hemanthrasabhathula/best-lines-of-books-backend
+    argocd-image-updater.argoproj.io/node-api.update-strategy: latest
+    argocd-image-updater.argoproj.io/write-back-method: argocd
+spec:
+  project: default
+  source:
+    repoURL: "https://github.com/hemanthrasabhathula/best-lines-of-books-full-stack.git"
+    targetRevision: main
+    path: server/k8s
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: blob-api
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

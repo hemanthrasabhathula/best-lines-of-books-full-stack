@@ -1,0 +1,62 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: node-api
+  namespace: blob-api
+  labels:
+    app: node-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: node-api
+  template:
+    metadata:
+      labels:
+        app: node-api
+    spec:
+      containers:
+        - name: node-api
+          image: hemanthrasabhathula/best-lines-of-books-backend:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3000
+          env:
+            - name: PORT
+              value: "3000"
+
+            - name: NODE_ENV
+              value: "production"
+
+            - name: GROQ_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: blob-api-secrets
+                  key: GROQ_API_KEY
+
+            - name: MONGO_URL
+              valueFrom:
+                secretKeyRef:
+                  name: blob-api-secrets
+                  key: MONGO_URL
+
+            # Add more env vars here if needed:
+          # If/when you move Mongo URI to env instead of .env in image:
+          # - name: MONGODB_URI
+          #   valueFrom:
+          #     secretKeyRef:
+          #       name: mongo-credentials
+          #       key: uri
+      #     readinessProbe:
+      #       httpGet:
+      #         path: /health # adjust to an actual lightweight endpoint
+      #         port: 3000
+      #       initialDelaySeconds: 10
+      #       periodSeconds: 10
+      #     livenessProbe:
+      #       httpGet:
+      #         path: /health # adjust if needed
+      #         port: 3000
+      #       initialDelaySeconds: 30
+      #       periodSeconds: 20
+      # restartPolicy: Always
