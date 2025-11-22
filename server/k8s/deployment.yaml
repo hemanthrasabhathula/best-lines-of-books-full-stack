@@ -41,6 +41,7 @@ spec:
                   key: MONGO_URL
 
             # Add more env vars here if needed:
+
           # If/when you move Mongo URI to env instead of .env in image:
           # - name: MONGODB_URI
           #   valueFrom:
