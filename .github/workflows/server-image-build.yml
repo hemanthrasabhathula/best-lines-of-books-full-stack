@@ -6,6 +6,7 @@ on:
       - main
     paths:
       - "server/**"
+      - ".github/workflows/server-image-build.yml"
 
 jobs:
   docker-build:
@@ -38,4 +39,25 @@ jobs:
           push: true
           platforms: linux/arm64
           tags: |
+            ${{ env.IMAGE_NAME }}:${{ github.sha }}
             ${{ env.IMAGE_NAME }}:latest
+      - name: Checkout GitOps repo
+        uses: actions/checkout@v4
+        with:
+          repository: YOUR_USERNAME/best-lines-of-books-gitops
+          path: gitops
+          token: ${{ secrets.GH_PAT }}
+
+      - name: Update Deployment Image Tag
+        run: |
+          sed -i "s|image:.*|image: ${IMAGE_NAME}:${{ github.sha }}|" \
+            gitops/environments/dev/blob-app-deployment.yaml
+
+      - name: Commit & Push GitOps update
+        run: |
+          cd gitops
+          git config --global user.email "ci@github.com"
+          git config --global user.name "GitHub Actions"
+          git add .
+          git commit -m "deploy: update backend image to ${{ github.sha }}"
+          git push
