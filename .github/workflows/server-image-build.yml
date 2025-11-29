@@ -44,7 +44,7 @@ jobs:
       - name: Checkout GitOps repo
         uses: actions/checkout@v4
         with:
-          repository: YOUR_USERNAME/best-lines-of-books-gitops
+          repository: hemanthrasabhathula/best-lines-of-books-gitops
           path: gitops
           token: ${{ secrets.GH_PAT }}
 
